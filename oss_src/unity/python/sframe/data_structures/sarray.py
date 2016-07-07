@@ -2094,6 +2094,37 @@ class SArray(object):
             return self.__proxy__.any()
 
 
+    def value_counts(self):
+        """
+        Counts the number of occurances of values in the SArray.
+
+        Returns
+        -------
+        out : SFrame
+
+        Examples
+        --------
+        >>> graphlab.SArray([1, 1, 1, 2, 2, 3]).value_counts()
+        Columns:
+	   Value   int
+           Count   int
+
+        Rows: 3
+
+        Data:
+        +-------+-------+
+        | Value | Count |
+        +-------+-------+
+        |   3   |   1   |
+        |   1   |   3   |
+        |   2   |   2   |
+        +-------+-------+
+        [3 rows x 2 columns]
+        """
+        from .sframe import SFrame as _SFrame
+        from ..aggregate import COUNT as _COUNT
+        return _SFrame({'Value': self}).groupby('Value', _COUNT)
+
     def max(self):
         """
         Get maximum numeric value in SArray.

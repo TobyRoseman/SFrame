@@ -777,6 +777,19 @@ class SArrayTest(unittest.TestCase):
         self.assertEqual(s.sum(), 0)
         self.assertEqual(s.mean(), None)
 
+    def test_value_counts(self):
+        sa = SArray([1, 1, 1, 2, 2, 3])
+        result = sa.value_counts()
+
+        self.assertEqual(result.shape, (3,2))
+        self.assertEqual(set(result.column_names()), set(['Count', 'Value']))
+
+        result = result.sort('Value')
+        correct_answer = {'Value': [1,2,3], 'Count': [3,2,1]}
+        for i, row in enumerate(result):
+            self.assertEqual(row['Value'], correct_answer['Value'][i])
+            self.assertEqual(row['Count'], correct_answer['Count'][i])
+
     def test_python_special_functions(self):
         s = SArray([], int)
         self.assertEqual(len(s), 0)
